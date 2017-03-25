@@ -3,7 +3,7 @@
     "displayName": "File Templates for VSCode",
     "description": "This extension helps in creating file templates.",
     "icon": "images/icon.png",
-    "version": "1.0.0",
+    "version": "1.0.2",
     "publisher": "bam",
     "engines": {
         "vscode": "^1.5.0"
@@ -30,7 +30,17 @@
                     "type":"string",
                     "default":"BAM",
                     "description": "Author of the file"
-                    }
+                    },
+                    "templates.EMail": {
+					"type": "string",
+					"default": "",
+					"description": "EMail of the file's author"
+				},
+				"templates.License": {
+					"type": "string",
+					"default": "",
+					"description": "License of the script"
+				}
             }
         },
         "commands": [{
