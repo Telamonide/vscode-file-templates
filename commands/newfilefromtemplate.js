@@ -6,7 +6,11 @@ const newTemplate = require('./newtemplate');
 const path = require('path');
 
 const DATE_TOKEN  = '${DATE}';
+const YEAR_TOKEN = '${YEAR}';
 const AUTHOR_TOKEN = '${AUTHOR}';
+const EMAIL_TOKEN = '${EMAIL}';
+const LICENSE_TOKEN = '${LICENSE}';
+const FILE_TOKEN = '${FILE}';
 const NEW_FILE = 'Files: New File';
 const CREATE_TEMPLATE = 'Files: New File Template';
 const EDIT_TEMPLATE = 'Files: Edit File Template';
@@ -31,8 +35,14 @@ function createFile(filepath, data = '', extension = ''){
 
             let newFilePath = path.join(curDir, filenameWithExt);
             let config = vscode.workspace.getConfiguration('templates');
-            data = data.replace(AUTHOR_TOKEN, config.Author);
-            data = data.replace(DATE_TOKEN, new Date().toDateString());
+            
+            var curDate = new Date();
+            data = data.split(AUTHOR_TOKEN).join(config.Author);
+            data = data.split(DATE_TOKEN).join(curDate.toLocaleDateString());
+            data = data.split(YEAR_TOKEN).join(curDate.getFullYear());
+            data = data.split(EMAIL_TOKEN).join(config.EMail);
+            data = data.split(LICENSE_TOKEN).join(config.License);
+            data = data.split(FILE_TOKEN).join(filenameWithExt);
 
             fs.stat(newFilePath, (err, stats) => {
                 
@@ -47,7 +57,7 @@ function createFile(filepath, data = '', extension = ''){
                         return;
                     }
 
-                    vscode.commands.executeCommand('vscode.open', vscode.Uri.parse('file://' + newFilePath)).then(() => {
+                    vscode.commands.executeCommand('vscode.open', vscode.Uri.parse('file:///' + newFilePath)).then(() => {
                         console.log('Document opened');
                     });
                 });
@@ -72,12 +82,19 @@ function constructTemplatesOptions(templatesInfo){
 
 function createNewFile(info){
     let currentPath = info._path;
-    if(!currentPath){
+    var isPathWrong = false;
+    if(currentPath)
+    {
+        if(!fs.existsSync(currentPath))
+            isPathWrong = true;
+    }
+    if(isPathWrong || !currentPath){
         let editor = vscode.window.activeTextEditor;
         if(editor)
+        {
             currentPath = editor.document.fileName;
-        
-        if(!currentPath)
+        }       
+        else
             currentPath = vscode.workspace.rootPath;
 
         // TODO : create untitled file from template

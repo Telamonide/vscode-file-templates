@@ -38,6 +38,10 @@ Create a new File from Template:
     'Files: Edit File Template'       -   to edit any existing template.
 
 * Add Author name and Date of creation to the file, by adding `${AUTHOR}` and `${DATE}` tokens to your template. 
+* Add author email by adding `${EMAIL}` token.
+* Add type of license by adding `${LICENSE}` token.
+* Add name of created file by adding `${FILE}` token.
+* Add year by adding `${YEAR}` token.
 
 
 <br/>
@@ -62,7 +66,8 @@ Create a new File from Template:
 This extension contributes the following settings:
 
 * `templates.Author`: Set the Author name. This is used for the new files created.
-
+* `templates.EMail`: Set email of the file's author.
+* `templates.License`: Set type of script license. 
 
 <br/>
 
@@ -86,5 +91,11 @@ Initial release of Templates for VSCode
 ### 1.0.1
 
 * Throw warning if a file exists with the same name, when creating new file.  
+
+### 1.0.2
+
+* Added tokens ${EMAIL}, ${LICENSE}, ${FILE}, ${YEAR}.
+* Added template for python 3.
+* Fixed create new file from context menu on Windows OS.
 
 -----------------------------------------------------------------------------------------------------------
